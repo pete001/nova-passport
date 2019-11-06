@@ -1,9 +1,10 @@
 {
-    "name": "petecheyne/passport",
-    "description": "A Laravel Nova tool.",
+    "name": "petecheyne/nova-passport",
+    "description": "A Laravel Nova tool to manage laravel passport.",
     "keywords": [
         "laravel",
-        "nova"
+        "nova",
+        "passport"
     ],
     "license": "MIT",
     "require": {

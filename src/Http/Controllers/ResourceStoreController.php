@@ -2,8 +2,10 @@
 
 namespace Petecheyne\Passport\Http\Controllers;
 
+use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\CreateResourceRequest;
 use Laravel\Passport\ClientRepository;
+use Laravel\Passport\TokenRepository;
 
 class ResourceStoreController extends \Laravel\Nova\Http\Controllers\ResourceStoreController
 {
@@ -22,7 +24,25 @@ class ResourceStoreController extends \Laravel\Nova\Http\Controllers\ResourceSto
 
             $resource::validateForCreation($request);
 
-            $model = (new ClientRepository)->create($request->get('user'), $request->get('name'), $request->get('redirect'));
+            $model = (new ClientRepository)->create($request->get('user'), $request->get('name'), $request->get('redirect_uri'));
+
+            return response()->json([
+                'id' => $model->getKey(),
+                'resource' => $model->attributesToArray(),
+                'redirect' => $resource::redirectAfterCreate($request, $request->newResourceWith($model)),
+            ], 201);
+        } elseif($resource === "Petecheyne\Passport\Nova\Token") {
+            $resource::authorizeToCreate($request);
+
+            $resource::validateForCreation($request);
+
+            $model = (new TokenRepository)->create([
+                'id' => Str::random(64),
+                'revoked' => false,
+                'user_id' => $request->get('user'),
+                'client_id' => $request->get('client'),
+                'scopes' => $request->get('scopes'),
+            ]);
 
             return response()->json([
                 'id' => $model->getKey(),

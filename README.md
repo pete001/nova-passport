@@ -8,13 +8,15 @@ add repository to composer under `repositories` array in your composer file
 ```json
 {
     "type": "path",
-    "url": "./packages//petecheyne/nova-passport"
+    "url": "./packages/petecheyne/nova-passport"
 }
 ```
 
 Add ` "petecheyne/nova-passport": "*"` to composer `require` array
 
 And run `composer update` and run `php artisan migrate`
+
+Add `Petecheyne\Passport\Passport` to nova tools in `NovaServiceProvider`
 
 # Add This field to user resource:
 

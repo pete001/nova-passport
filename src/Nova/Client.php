@@ -65,9 +65,10 @@ class Client extends Resource
                     'max:255'
                 ]),
 
-            Text::make(__('Redirect URL'), 'redirect')
+            Text::make(__('Redirect URL'), 'redirect_uri')
                 ->rules([
                     'required',
+                    'url'
                 ]),
 
             ID::make(__('Client ID'), 'id')->sortable(),
