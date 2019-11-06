@@ -63,7 +63,7 @@ class Client extends Resource
                 ->rules([
                     'required',
                     'max:255'
-                ]),
+                ])->sortable(),
 
             Text::make(__('Redirect URL'), 'redirect_uri')
                 ->rules([

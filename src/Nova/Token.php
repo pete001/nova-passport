@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Timezone;
+use NovaItemsField\Items;
 use Petecheyne\Passport\Nova\Actions\RevokeAccess;
 
 class Token extends Resource
@@ -52,11 +53,13 @@ class Token extends Resource
                 ->hideWhenCreating()
                 ->hideFromIndex(),
 
-            BelongsTo::make(__('User'), 'user', User::class),
+            BelongsTo::make(__('User'), 'user', User::class)
+                ->searchable(),
 
-            BelongsTo::make(__('Client'), 'client', Client::class),
+            BelongsTo::make(__('Client'), 'client', Client::class)
+                ->searchable(),
 
-            Text::make(__('Scopes'), 'scopes'),
+            Items::make('Scopes', 'scopes'),
 
             Boolean::make(__('Revoked'), 'revoked')
                 ->hideWhenUpdating()
