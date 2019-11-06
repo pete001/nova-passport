@@ -37,14 +37,14 @@ class Client extends Resource
         'name',
     ];
 
-    public static function group()
-    {
-        return __('Passport');
-    }
-
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query->where('user_id', '<>', null);
+    }
+
+    public static function group()
+    {
+        return __('Passport');
     }
 
     /**
@@ -69,7 +69,13 @@ class Client extends Resource
                 ->rules([
                     'required',
                     'url'
-                ]),
+                ])->hideFromDetail()->hideFromIndex(),
+
+            Text::make(__('Redirect URL'), 'redirect')
+                ->rules([
+                    'required',
+                    'url'
+                ])->hideWhenCreating()->hideWhenUpdating(),
 
             ID::make(__('Client ID'), 'id')->sortable(),
 
@@ -127,7 +133,7 @@ class Client extends Resource
     public function actions(Request $request)
     {
         return [
-            new RefreshClientSecret
+            (new RefreshClientSecret)->withoutActionEvents(),
         ];
     }
 }

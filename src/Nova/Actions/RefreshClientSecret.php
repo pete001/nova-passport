@@ -2,14 +2,13 @@
 
 namespace Petecheyne\Passport\Nova\Actions;
 
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
-use Laravel\Passport\Passport;
+use Laravel\Passport\ClientRepository;
 
 class RefreshClientSecret extends Action
 {
@@ -24,15 +23,8 @@ class RefreshClientSecret extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        $expiration = Carbon::now()->addMinutes(config('session.lifetime'))->format('Y-m-d H:i:s');
-
         foreach ($models as $model) {
-
-            $model->tokens->each(function ($token) use ($expiration){
-                Passport::refreshToken()->where('id', $token->id)->update([
-                    'expires_at' => $expiration
-                ]);
-            });
+            (new ClientRepository)->regenerateSecret($model);
         }
     }
 

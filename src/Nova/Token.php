@@ -110,7 +110,7 @@ class Token extends Resource
     public function actions(Request $request)
     {
         return [
-            new RevokeAccess(),
+            (new RevokeAccess)->withoutActionEvents(),
         ];
     }
 }

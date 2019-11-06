@@ -37,7 +37,7 @@ class ResourceStoreController extends \Laravel\Nova\Http\Controllers\ResourceSto
             $resource::validateForCreation($request);
 
             $model = (new TokenRepository)->create([
-                'id' => Str::random(64),
+                'id' => Str::random(40),
                 'revoked' => false,
                 'user_id' => $request->get('user'),
                 'client_id' => $request->get('client'),
