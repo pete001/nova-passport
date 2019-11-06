@@ -6,7 +6,6 @@ use App\Nova\Resource;
 use App\Nova\User;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -55,14 +54,17 @@ class Client extends Resource
             BelongsTo::make(__('User'), 'user', User::class)
                 ->searchable(),
 
-            Text::make(__('Name'), 'name'),
+            Text::make(__('Name'), 'name')
+                ->rules([
+                    'required',
+                    'max:255'
+                ]),
 
-            Text::make(__('Redirect URL'), 'redirect'),
-
-            Boolean::make(__('Has Secret'), 'has_secret')
-                ->hideFromIndex()
-                ->hideFromDetail()
-                ->hideWhenUpdating(),
+            Text::make(__('Redirect URL'), 'redirect')
+                ->rules([
+                    'required',
+                    'url'
+                ]),
 
             ID::make(__('Client ID'), 'id')->sortable(),
 

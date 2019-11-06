@@ -2,6 +2,7 @@
 
 namespace Petecheyne\Passport;
 
+use Laravel\Nova\Http\Controllers\ResourceStoreController;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
@@ -50,8 +51,8 @@ class ToolServiceProvider extends ServiceProvider
         }
 
         Route::middleware(['nova', Authorize::class])
-                ->prefix('nova-vendor/passport')
-                ->group(__DIR__.'/../routes/api.php');
+            ->prefix('nova-vendor/passport')
+            ->group(__DIR__.'/../routes/api.php');
     }
 
     /**
@@ -61,6 +62,8 @@ class ToolServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->extend(ResourceStoreController::class, function () {
+            return new Http\Controllers\ResourceStoreController;
+        });
     }
 }
