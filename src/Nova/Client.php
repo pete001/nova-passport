@@ -37,6 +37,11 @@ class Client extends Resource
         'name',
     ];
 
+    public static function group()
+    {
+        return __('Passport');
+    }
+
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query->where('user_id', '<>', null);
@@ -63,7 +68,6 @@ class Client extends Resource
             Text::make(__('Redirect URL'), 'redirect')
                 ->rules([
                     'required',
-                    'url'
                 ]),
 
             ID::make(__('Client ID'), 'id')->sortable(),
